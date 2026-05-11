@@ -15,6 +15,7 @@ import { CheckInList } from "@/components/CheckInList";
 import { CommentThread, type TradeComment } from "@/components/CommentThread";
 import { ReviewControls } from "@/components/ReviewControls";
 import { WeeklyOverview } from "@/components/WeeklyOverview";
+import { RemoveStudentForm } from "@/components/RemoveStudentForm";
 import { computeWeeklyStats } from "@/lib/weekly";
 import { TopBar, PageHeader, Footer } from "@/components/Brand";
 import { signOut } from "@/app/login/actions";
@@ -302,6 +303,14 @@ export default async function StudentDetailPage({
             )}
           />
         </section>
+
+        {student.role === "student" && (
+          <RemoveStudentForm
+            studentId={student.id}
+            studentEmail={student.email}
+            studentName={name}
+          />
+        )}
       </main>
 
       <Footer />

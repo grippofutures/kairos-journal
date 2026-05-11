@@ -92,3 +92,86 @@ export async function unmarkReviewed(formData: FormData) {
 
   safeRevalidate(returnTo);
 }
+
+/**
+ * Permanently remove a student and all their journal data.
+ *
+ * Validates:
+ *   - Caller is a mentor
+ *   - Target is a student (cannot remove other mentors via this action)
+ *   - The typed email matches the student's actual email (two-step confirm)
+ *
+ * Deletes:
+ *   - All screenshot files from storage
+ *   - Daily check-ins
+ *   - Trades (cascade-deletes trade_comments via FK)
+ *   - Profile row
+ *
+ * Does NOT delete:
+ *   - auth.users row (requires service-role key, which the app doesn't have).
+ *     The student can re-sign-in via Discord if still in the Kairos guild.
+ *     To prevent that, remove them from Discord first.
+ */
+export async function removeStudent(formData: FormData) {
+  const { supabase } = await requireMentor();
+
+  const userId = String(formData.get("user_id") ?? "");
+  const typedEmail = String(formData.get("typed_email") ?? "").trim();
+
+  if (!userId) throw new Error("Missing student id.");
+  if (!typedEmail) throw new Error("Type the student's email to confirm.");
+
+  // Verify the target exists and is a student
+  const { data: target, error: targetErr } = await supabase
+    .from("profiles")
+    .select("id, role, email")
+    .eq("id", userId)
+    .single();
+
+  if (targetErr || !target) throw new Error("Student not found.");
+  if (target.role !== "student") {
+    throw new Error("Can only remove accounts with the 'student' role.");
+  }
+  if (typedEmail.toLowerCase() !== target.email.toLowerCase()) {
+    throw new Error("Email confirmation does not match. Try again.");
+  }
+
+  // 1. Collect screenshot paths and delete them from storage
+  const { data: screenshotTrades } = await supabase
+    .from("trades")
+    .select("screenshot_path")
+    .eq("user_id", userId)
+    .not("screenshot_path", "is", null);
+
+  const paths = (screenshotTrades ?? [])
+    .map((t) => t.screenshot_path as string | null)
+    .filter((p): p is string => !!p);
+
+  if (paths.length > 0) {
+    await supabase.storage.from("screenshots").remove(paths);
+  }
+
+  // 2. Delete daily check-ins
+  const { error: checkinsErr } = await supabase
+    .from("daily_checkins")
+    .delete()
+    .eq("user_id", userId);
+  if (checkinsErr) throw new Error(`check-ins delete: ${checkinsErr.message}`);
+
+  // 3. Delete trades (trade_comments cascade via FK)
+  const { error: tradesErr } = await supabase
+    .from("trades")
+    .delete()
+    .eq("user_id", userId);
+  if (tradesErr) throw new Error(`trades delete: ${tradesErr.message}`);
+
+  // 4. Delete profile
+  const { error: profileErr } = await supabase
+    .from("profiles")
+    .delete()
+    .eq("id", userId);
+  if (profileErr) throw new Error(`profile delete: ${profileErr.message}`);
+
+  // Redirect to the cohort page — student is gone
+  redirect("/mentor");
+}
