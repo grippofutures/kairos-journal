@@ -174,32 +174,32 @@ export default async function MentorPage() {
             label="Cohort net"
             value={fmtMoneySigned(cohortPnl)}
             numericValue={cohortPnl}
-            format={(n) => fmtMoneySigned(n)}
+            format="money-signed"
           />
           <BigStat
             label="Trades logged"
             value={String(cohortTotal)}
             numericValue={cohortTotal}
-            format={(n) => String(Math.round(n))}
+            format="integer"
           />
           <BigStat
             label="Cohort win rate"
             value={fmtPct(cohortWinRate)}
             numericValue={cohortWinRate}
-            format={(n) => fmtPct(n)}
+            format="percent"
           />
           <BigStat
             label="Active alerts"
             value={String(alertDigest.length)}
             numericValue={alertDigest.length}
-            format={(n) => String(Math.round(n))}
+            format="integer"
             emphasis={alertDigest.length > 0}
           />
           <BigStat
             label="Unreviewed"
             value={String(unreviewedCount ?? 0)}
             numericValue={unreviewedCount ?? 0}
-            format={(n) => String(Math.round(n))}
+            format="integer"
             emphasis={(unreviewedCount ?? 0) > 0}
           />
         </section>
@@ -384,7 +384,7 @@ function BigStat({
   label: string;
   value: string;
   numericValue?: number;
-  format?: (n: number) => string;
+  format?: "integer" | "signed-integer" | "money-signed" | "percent";
   emphasis?: boolean;
 }) {
   return (

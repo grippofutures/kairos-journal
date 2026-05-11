@@ -5,16 +5,48 @@ import { useEffect, useState } from "react";
 /**
  * Counts up from 0 to `value` over `duration` ms on mount.
  * Uses easeOutCubic — mechanical but not floppy. Respects reduced-motion.
+ *
+ * Format is passed as a STRING enum (not a function) because server components
+ * cannot serialize function props across to client components in Next 15+.
  */
+
+export type NumberFormat =
+  | "integer"
+  | "signed-integer"
+  | "money-signed"
+  | "percent";
+
+function formatValue(n: number, format: NumberFormat): string {
+  switch (format) {
+    case "money-signed": {
+      const rounded = Math.round(n);
+      const sign = rounded > 0 ? "+" : rounded < 0 ? "−" : "";
+      return `${sign}$${Math.abs(rounded).toLocaleString()}`;
+    }
+    case "signed-integer": {
+      const rounded = Math.round(n);
+      const sign = rounded > 0 ? "+" : "";
+      return `${sign}${rounded}`;
+    }
+    case "percent": {
+      // n is a fraction (0.42 → "42%")
+      return `${Math.round(n * 100)}%`;
+    }
+    case "integer":
+    default:
+      return String(Math.round(n));
+  }
+}
+
 export function NumberCounter({
   value,
   duration = 600,
-  format = (n) => Math.round(n).toString(),
+  format = "integer",
   className,
 }: {
   value: number;
   duration?: number;
-  format?: (n: number) => string;
+  format?: NumberFormat;
   className?: string;
 }) {
   const [display, setDisplay] = useState(value);
@@ -44,5 +76,5 @@ export function NumberCounter({
     return () => cancelAnimationFrame(frameId);
   }, [value, duration]);
 
-  return <span className={className}>{format(display)}</span>;
+  return <span className={className}>{formatValue(display, format)}</span>;
 }

@@ -80,12 +80,8 @@ export function DayDetail({
       {/* Day stats */}
       {trades.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-soft border border-soft mb-8">
-          <BigStatNum label="Trades" value={trades.length} format={(n) => String(Math.round(n))} />
-          <BigStatNum
-            label="Net"
-            value={totalPnl}
-            format={(n) => `${n >= 0 ? "+" : ""}${Math.round(n)}`}
-          />
+          <BigStatNum label="Trades" value={trades.length} format="integer" />
+          <BigStatNum label="Net" value={totalPnl} format="signed-integer" />
           <BigStat label="Wins" value={`${wins} / ${trades.length}`} />
           <BigStat
             label="Rules"
@@ -246,7 +242,7 @@ function BigStatNum({
 }: {
   label: string;
   value: number;
-  format: (n: number) => string;
+  format: "integer" | "signed-integer" | "money-signed" | "percent";
 }) {
   return (
     <div className="bg-canvas px-5 py-5">

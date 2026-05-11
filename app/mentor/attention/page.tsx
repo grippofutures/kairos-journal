@@ -249,25 +249,25 @@ export default async function AttentionPage() {
             label="Cohort net · 7d"
             value={fmtMoneySigned(weekPnl)}
             numericValue={weekPnl}
-            format={(n) => fmtMoneySigned(n)}
+            format="money-signed"
           />
           <BigStat
             label="Trades · 7d"
             value={String(recentTrades.length)}
             numericValue={recentTrades.length}
-            format={(n) => String(Math.round(n))}
+            format="integer"
           />
           <BigStat
             label="Win rate · 7d"
             value={fmtPct(weekWinRate)}
             numericValue={weekWinRate}
-            format={(n) => fmtPct(n)}
+            format="percent"
           />
           <BigStat
             label="Rules broken · 7d"
             value={String(weekBroken)}
             numericValue={weekBroken}
-            format={(n) => String(Math.round(n))}
+            format="integer"
             emphasis={weekBroken > 0}
           />
         </section>
@@ -408,7 +408,7 @@ function BigStat({
   label: string;
   value: string;
   numericValue?: number;
-  format?: (n: number) => string;
+  format?: "integer" | "signed-integer" | "money-signed" | "percent";
   emphasis?: boolean;
 }) {
   return (
