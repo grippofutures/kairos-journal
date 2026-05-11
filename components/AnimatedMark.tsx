@@ -88,7 +88,7 @@ export function AnimatedMark({ size = 200 }: { size?: number }) {
 
         .kairos-sand-bottom {
           transform-box: fill-box;
-          transform-origin: 50% 0%; /* the apex (top of the bottom triangle) */
+          transform-origin: 50% 100%; /* the base — sand piles UP from the floor */
           animation: kairos-fill 32s ease-in-out infinite;
         }
 
