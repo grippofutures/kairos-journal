@@ -1,9 +1,11 @@
 /**
  * Kairos editorial mark — animated.
  *
- * The hourglass drains over 32 seconds, then the whole figure flips and the
- * cycle repeats. The gold bead breathes on a 4-second cycle. All motion is
- * slow and restrained — "wait, then act" embodied visually.
+ * The hourglass drains the top chamber and fills the bottom over 22 seconds.
+ * Then both sand polygons fade out, reset to their start positions, and fade
+ * back in for the next cycle. No flip — sand always falls down, never up.
+ *
+ * The gold bead breathes on a 4-second cycle.
  *
  * Respects `prefers-reduced-motion: reduce` (stops all animation).
  * Server component — pure SVG + CSS, no JS state.
@@ -36,20 +38,21 @@ export function AnimatedMark({ size = 200 }: { size?: number }) {
           fill="none"
           stroke="#F0EDE8"
           strokeWidth="0.4"
-          opacity="0.20"
+          opacity="0.18"
         />
         <polygon
           points="10,91 50,91 30,50"
           fill="none"
           stroke="#F0EDE8"
           strokeWidth="0.4"
-          opacity="0.20"
+          opacity="0.18"
         />
 
         {/* The sand — two animated polygons.
-            Top drains (scaleY 1 → 0 with origin at the apex = bottom of the
-            top triangle). Bottom fills (scaleY 0 → 1 with origin at the apex
-            = top of the bottom triangle). */}
+            Top drains (scaleY 1 → 0 with origin at the apex = the bottom of
+            the top triangle, so the wide top edge slides DOWN toward the apex).
+            Bottom fills (scaleY 0 → 1 with origin at the base = the bottom of
+            the bottom triangle, so the apex rises UP from the floor). */}
         <polygon
           className="kairos-sand-top"
           points="10,9 50,9 30,50"
@@ -74,22 +77,24 @@ export function AnimatedMark({ size = 200 }: { size?: number }) {
       <style>{`
         .kairos-mark-wrap {
           display: inline-block;
-          /* Flip 180° instantly at the halfway point so the cycle continues
-             with the chambers visually swapped. 64s total = 32s drain + flip
-             + 32s drain (now reversed orientation). */
-          animation: kairos-flip 64s steps(1, end) infinite;
         }
 
+        /* Top sand: drains from full (scaleY 1) to empty (scaleY 0).
+           Origin at the apex (bottom-center of bbox) so the wide top
+           edge slides DOWN toward the apex as sand drains. */
         .kairos-sand-top {
           transform-box: fill-box;
-          transform-origin: 50% 100%; /* the apex (bottom of the top triangle) */
-          animation: kairos-drain 32s ease-in-out infinite;
+          transform-origin: 50% 100%;
+          animation: kairos-drain 22s ease-in-out infinite;
         }
 
+        /* Bottom sand: fills from empty (scaleY 0) to full (scaleY 1).
+           Origin at the base (bottom-center of bbox) so the apex RISES
+           UP from the floor as sand piles. */
         .kairos-sand-bottom {
           transform-box: fill-box;
-          transform-origin: 50% 100%; /* the base — sand piles UP from the floor */
-          animation: kairos-fill 32s ease-in-out infinite;
+          transform-origin: 50% 100%;
+          animation: kairos-fill 22s ease-in-out infinite;
         }
 
         .kairos-bead {
@@ -98,19 +103,29 @@ export function AnimatedMark({ size = 200 }: { size?: number }) {
           animation: kairos-bead 4s ease-in-out infinite;
         }
 
-        @keyframes kairos-flip {
-          0%, 49.9% { transform: rotate(0deg); }
-          50%, 100% { transform: rotate(180deg); }
-        }
-
+        /* Drain cycle:
+             0%–75%   sand falls (the visible drain)
+             75%–82%  pause at empty (let it land)
+             82%–92%  fade out (both sands)
+             92%–93%  snap back to start position (invisible)
+             93%–100% fade back in at full
+        */
         @keyframes kairos-drain {
-          0% { transform: scaleY(1); }
-          100% { transform: scaleY(0); }
+          0%   { transform: scaleY(1); opacity: 1; }
+          75%  { transform: scaleY(0); opacity: 1; }
+          82%  { transform: scaleY(0); opacity: 1; }
+          92%  { transform: scaleY(0); opacity: 0; }
+          92.5% { transform: scaleY(1); opacity: 0; }
+          100% { transform: scaleY(1); opacity: 1; }
         }
 
         @keyframes kairos-fill {
-          0% { transform: scaleY(0); }
-          100% { transform: scaleY(1); }
+          0%   { transform: scaleY(0); opacity: 1; }
+          75%  { transform: scaleY(1); opacity: 1; }
+          82%  { transform: scaleY(1); opacity: 1; }
+          92%  { transform: scaleY(1); opacity: 0; }
+          92.5% { transform: scaleY(0); opacity: 0; }
+          100% { transform: scaleY(0); opacity: 1; }
         }
 
         @keyframes kairos-bead {
@@ -119,7 +134,6 @@ export function AnimatedMark({ size = 200 }: { size?: number }) {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .kairos-mark-wrap,
           .kairos-sand-top,
           .kairos-sand-bottom,
           .kairos-bead {
