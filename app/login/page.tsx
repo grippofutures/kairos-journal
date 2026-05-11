@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { signInWithDiscord } from "./actions";
 import { Wordmark, Footer } from "@/components/Brand";
 import { AnimatedMark } from "@/components/AnimatedMark";
@@ -5,9 +6,17 @@ import { AnimatedMark } from "@/components/AnimatedMark";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; code?: string }>;
 }) {
   const params = await searchParams;
+
+  // Defensive: if Supabase landed an OAuth `code` here instead of /auth/callback
+  // (happens when Site URL is misconfigured to include /login), forward it
+  // straight to the proper handler so the user is not stranded on this page.
+  if (params.code) {
+    redirect(`/auth/callback?code=${encodeURIComponent(params.code)}`);
+  }
+
   const errorMsg = params.error ? decodeURIComponent(params.error) : null;
 
   return (
