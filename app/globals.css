@@ -1,0 +1,235 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Kairos — Journal
+ * Two colors. Restraint is the third.
+ */
+
+:root {
+  color-scheme: dark;
+  --canvas: #080808;
+  --surface: #0F0F0F;
+  --surface-2: #161616;
+  --soft: #1f1f1f;
+  --muted: #6b6b6b;
+  --muted-soft: #a8a39c;
+  --bone: #F0EDE8;
+  --bone-dim: #c8c4be;
+  --gold: #C6AB5C;
+  --gold-bright: #d9bf6f;
+  --gold-deep: #9c854a;
+  --gold-border: rgba(198, 171, 92, 0.30);
+  --gold-tint: rgba(198, 171, 92, 0.08);
+}
+
+html, body {
+  background: var(--canvas);
+  color: var(--bone);
+}
+
+body {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+
+em, .italic {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-style: italic;
+}
+
+/* Form controls — restrained, gold focus */
+input, select, textarea {
+  background: var(--surface);
+  border: 1px solid var(--soft);
+  color: var(--bone);
+  padding: 0.625rem 0.875rem;
+  border-radius: 2px;
+  width: 100%;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 14px;
+  transition: border-color 120ms ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+input[type="file"] {
+  padding: 0.5rem 0.75rem;
+}
+
+input[type="range"] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  height: 2px;
+  accent-color: var(--gold);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var(--soft);
+  height: 1px;
+}
+
+input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* The action button — gold on canvas. Wait. Then act. */
+.btn-primary {
+  background: var(--gold);
+  color: var(--canvas);
+  padding: 0.625rem 1.25rem;
+  border-radius: 2px;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  transition: background 120ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--gold-bright);
+}
+
+.btn-primary:disabled {
+  background: var(--soft);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.btn-quiet {
+  background: transparent;
+  border: 1px solid var(--soft);
+  color: var(--bone-dim);
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn-quiet:hover {
+  border-color: var(--gold);
+  color: var(--bone);
+}
+
+/* Eyebrow text — small, tracked, gold. The brief calls these out specifically. */
+.eyebrow {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.eyebrow-muted {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Thin gold rule */
+.rule-gold {
+  height: 1px;
+  background: var(--gold);
+  width: 32px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Hairline section divider */
+.hairline {
+  height: 1px;
+  background: var(--soft);
+  border: 0;
+}
+
+.hairline-gold {
+  height: 1px;
+  background: var(--gold-border);
+  border: 0;
+}
+
+/* Gold-bordered card (alerts, emphasis cards) */
+.card-gold {
+  background: var(--surface);
+  border: 1px solid var(--gold-border);
+  border-radius: 2px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--soft);
+  border-radius: 2px;
+}
+
+/* Numerals: Cormorant, with tabular figures for tables */
+.num {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* ---------- Subtle motion ---------- */
+
+/* Page-load fade-in: main content settles in over 320ms. Restrained, not flashy. */
+main {
+  animation: kairos-fade-in 320ms ease-out;
+}
+
+@keyframes kairos-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover: lift via a faint gold border tint. No shadow, no glow. */
+.card {
+  transition: border-color 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main { animation: none; }
+  .card { transition: none; }
+}
+
+/* Muted scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--soft);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}

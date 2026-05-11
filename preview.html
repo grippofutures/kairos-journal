@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kairos — Journal · Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          canvas: "#080808",
+          surface: "#0F0F0F",
+          "surface-2": "#161616",
+          soft: "#1f1f1f",
+          muted: "#6b6b6b",
+          "muted-soft": "#a8a39c",
+          bone: "#F0EDE8",
+          "bone-dim": "#c8c4be",
+          gold: { DEFAULT: "#C6AB5C", bright: "#d9bf6f", deep: "#9c854a" },
+        },
+        fontFamily: {
+          display: ['"Cormorant Garamond"', "Georgia", "serif"],
+          ui: ['Inter', "system-ui", "sans-serif"],
+        },
+        letterSpacing: { eyebrow: "0.32em", wordmark: "0.18em" },
+      },
+    },
+  };
+</script>
+<style>
+  html, body { background: #080808; color: #F0EDE8; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.8; }
+  h1, h2, h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 400; line-height: 1.15; }
+  em { font-style: italic; font-family: "Cormorant Garamond", Georgia, serif; }
+  .eyebrow { font-family: Inter; font-size: 11px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: #C6AB5C; }
+  .eyebrow-muted { font-family: Inter; font-size: 11px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: #6b6b6b; }
+  .rule-gold { display: inline-block; width: 32px; height: 1px; background: #C6AB5C; vertical-align: middle; }
+  .hairline { height: 1px; background: #1f1f1f; border: 0; }
+  .card { background: #0F0F0F; border: 1px solid #1f1f1f; border-radius: 2px; }
+  .num { font-family: "Cormorant Garamond", Georgia, serif; font-feature-settings: "tnum" 1, "lnum" 1; }
+  input, select, textarea { background: #0F0F0F; border: 1px solid #1f1f1f; color: #F0EDE8; padding: 0.625rem 0.875rem; border-radius: 2px; width: 100%; font-family: Inter; font-size: 14px; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #C6AB5C; }
+  .btn-primary { background: #C6AB5C; color: #080808; padding: 0.625rem 1.25rem; border-radius: 2px; font-weight: 500; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; border: none; cursor: pointer; }
+  .btn-primary:hover { background: #d9bf6f; }
+  .btn-quiet { background: transparent; border: 1px solid #1f1f1f; color: #c8c4be; padding: 0.5rem 1rem; border-radius: 2px; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; }
+  .btn-quiet:hover { border-color: #C6AB5C; color: #F0EDE8; }
+  .preview-banner { background: #161616; border-bottom: 1px solid #1f1f1f; padding: 0.75rem 1.5rem; font-size: 12px; color: #a8a39c; text-align: center; }
+  .preview-banner strong { color: #C6AB5C; font-weight: 500; }
+  .section-divider { background: #161616; border-top: 1px solid #1f1f1f; border-bottom: 1px solid #1f1f1f; padding: 0.75rem 1.5rem; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: #6b6b6b; text-align: center; }
+</style>
+</head>
+
+<body>
+
+<div class="preview-banner">
+  <strong>Static preview</strong> &nbsp;·&nbsp; mock data, no auth, no database. The real app runs at <code>localhost:3000</code> after <code>npm run dev</code>.
+</div>
+
+<!-- ============================================================ -->
+<!-- LOGIN -->
+<!-- ============================================================ -->
+<div class="section-divider">— Login —</div>
+
+<section class="min-h-[80vh] flex items-center justify-center px-6 py-16">
+  <div class="w-full max-w-sm text-center">
+    <div class="flex justify-center mb-6">
+      <!-- Mark: hourglass with gold rules + bead -->
+      <svg viewBox="0 0 60 100" width="29" height="48" fill="none">
+        <line x1="6" y1="5" x2="54" y2="5" stroke="#C6AB5C" stroke-width="2"/>
+        <line x1="6" y1="95" x2="54" y2="95" stroke="#C6AB5C" stroke-width="2"/>
+        <path d="M10 9 L50 9 L30 50 Z" fill="#F0EDE8"/>
+        <path d="M10 91 L50 91 L30 50 Z" fill="#F0EDE8"/>
+        <circle cx="30" cy="50" r="2" fill="#C6AB5C"/>
+      </svg>
+    </div>
+    <span class="font-display tracking-wordmark uppercase text-3xl block mb-3">Kairos</span>
+    <div class="eyebrow mb-10"><span class="rule-gold mr-3"></span>Timing is everything<span class="rule-gold ml-3"></span></div>
+
+    <h1 class="font-display text-3xl mb-4 leading-tight">Welcome back.</h1>
+    <p class="text-bone-dim text-sm mb-8 leading-relaxed">Enter your email. A sign-in link will arrive — single use, brief, no password.</p>
+
+    <form class="space-y-4 text-left" onsubmit="event.preventDefault()">
+      <input type="email" placeholder="you@example.com">
+      <button type="submit" class="btn-primary w-full">Send the link</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- STUDENT DASHBOARD -->
+<!-- ============================================================ -->
+<div class="section-divider">— Student dashboard —</div>
+
+<!-- TopBar -->
+<div class="border-b border-soft">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg viewBox="0 0 60 100" width="14" height="24" fill="none">
+        <line x1="6" y1="5" x2="54" y2="5" stroke="#C6AB5C" stroke-width="2"/>
+        <line x1="6" y1="95" x2="54" y2="95" stroke="#C6AB5C" stroke-width="2"/>
+        <path d="M10 9 L50 9 L30 50 Z" fill="#F0EDE8"/>
+        <path d="M10 91 L50 91 L30 50 Z" fill="#F0EDE8"/>
+        <circle cx="30" cy="50" r="2" fill="#C6AB5C"/>
+      </svg>
+      <span class="font-display tracking-wordmark uppercase text-[15px]">Kairos</span>
+      <span class="w-px h-4 bg-soft"></span>
+      <span class="eyebrow-muted">Journal</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="eyebrow-muted hidden sm:inline">student@example.com</span>
+      <button class="btn-quiet">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<main class="max-w-5xl w-full mx-auto px-6 py-12">
+
+  <!-- Page header -->
+  <header class="mb-10 pb-8 border-b border-soft">
+    <div class="eyebrow mb-5"><span class="rule-gold mr-3"></span>The journal</div>
+    <h1 class="font-display text-5xl leading-tight">Wait. Then write the <em class="text-gold">read.</em></h1>
+    <p class="mt-4 text-bone-dim max-w-2xl text-[15px] leading-relaxed">
+      Each entry is a thesis. Each thesis is graded against the framework. Patterns surface in the review.
+    </p>
+  </header>
+
+  <!-- Stats bar -->
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-px bg-soft border border-soft mb-10">
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Trades</div><div class="mt-2 text-3xl leading-none num font-display text-bone">42</div></div>
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Win rate</div><div class="mt-2 text-3xl leading-none num font-display text-bone">61.9%</div></div>
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Avg R</div><div class="mt-2 text-3xl leading-none num font-display text-bone">1.42</div></div>
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Net</div><div class="mt-2 text-3xl leading-none num font-display text-bone">$3,847.00</div></div>
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Loss streak</div><div class="mt-2 text-3xl leading-none num font-display italic text-gold">3</div></div>
+    <div class="bg-canvas px-4 py-5"><div class="eyebrow-muted">Framework</div><div class="mt-2 text-3xl leading-none num font-display text-bone">7.4</div></div>
+  </div>
+
+  <!-- Trade form (compact preview — show structure, not every field) -->
+  <form class="card p-8 mb-10 space-y-10" onsubmit="event.preventDefault()">
+    <div>
+      <div class="eyebrow mb-3"><span class="rule-gold mr-3"></span>Log a trade</div>
+      <h2 class="font-display text-3xl leading-tight">Wait. Then write the read.</h2>
+      <p class="mt-3 text-bone-dim text-sm leading-relaxed max-w-xl">
+        Each entry is a thesis. Each thesis is graded against the framework. Be honest — the goal is patterns, not optics.
+      </p>
+    </div>
+    <hr class="hairline">
+
+    <section class="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-6">
+      <div>
+        <div class="font-display text-gold text-2xl italic leading-none">01</div>
+        <div class="eyebrow-muted mt-2">The trade</div>
+      </div>
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <label class="block"><span class="eyebrow-muted block mb-2">Date · time</span><input type="datetime-local" value="2026-05-05T10:30"></label>
+          <label class="block"><span class="eyebrow-muted block mb-2">Instrument</span><input value="NQ"></label>
+          <label class="block"><span class="eyebrow-muted block mb-2">Direction</span><select><option>Long</option><option>Short</option></select></label>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline">
+
+    <section class="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-6">
+      <div>
+        <div class="font-display text-gold text-2xl italic leading-none">02</div>
+        <div class="eyebrow-muted mt-2">The framework</div>
+      </div>
+      <div class="space-y-4">
+        <label class="block"><span class="eyebrow-muted block mb-2">Candle type</span><select><option>Expansion</option><option>Reversal → Expansion</option><option>Reversal</option></select></label>
+        <p class="text-[13px] text-bone-dim leading-relaxed border-l border-gold pl-4 italic font-display">
+          Opens at one extreme. Small opposing wick. Expands away to close near the other extreme. EQ of the prior candle holds. TP1 is the prior candle's high or low. TP2 is the higher-timeframe draw on liquidity.
+        </p>
+        <div>
+          <div class="eyebrow-muted mb-3">The pillars present</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <label class="flex items-start gap-3 bg-canvas border border-soft rounded-sm p-4 cursor-pointer hover:border-gold transition-colors">
+              <input type="checkbox" checked class="mt-1" style="width:14px; height:14px; accent-color: #C6AB5C;">
+              <div><div class="font-display text-base">Profile</div><div class="text-xs text-bone-dim mt-1 leading-relaxed">The shape itself. Expansion: opens at one extreme, expands away with a small opposing wick.</div></div>
+            </label>
+            <label class="flex items-start gap-3 bg-canvas border border-soft rounded-sm p-4 cursor-pointer hover:border-gold transition-colors">
+              <input type="checkbox" checked class="mt-1" style="width:14px; height:14px; accent-color: #C6AB5C;">
+              <div><div class="font-display text-base">Signature</div><div class="text-xs text-bone-dim mt-1 leading-relaxed">The filter. A small opposing wick. The wick decides.</div></div>
+            </label>
+            <label class="flex items-start gap-3 bg-canvas border border-soft rounded-sm p-4 cursor-pointer hover:border-gold transition-colors">
+              <input type="checkbox" class="mt-1" style="width:14px; height:14px; accent-color: #C6AB5C;">
+              <div><div class="font-display text-base">Trigger</div><div class="text-xs text-bone-dim mt-1 leading-relaxed">EQ of prior candle respected. A key level. Or phases of price.</div></div>
+            </label>
+            <label class="flex items-start gap-3 bg-canvas border border-soft rounded-sm p-4 cursor-pointer hover:border-gold transition-colors">
+              <input type="checkbox" checked class="mt-1" style="width:14px; height:14px; accent-color: #C6AB5C;">
+              <div><div class="font-display text-base">Targets</div><div class="text-xs text-bone-dim mt-1 leading-relaxed">TP1 and TP2 marked before entry — never after.</div></div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-baseline justify-between mb-2">
+            <span class="eyebrow-muted">Score against the framework</span>
+            <span class="font-display text-2xl italic text-bone">7<span class="text-muted not-italic"> / 10</span></span>
+          </div>
+          <input type="range" min="1" max="10" value="7" style="accent-color: #C6AB5C;">
+          <div class="text-xs font-display italic text-bone-dim mt-2">Solid. One pillar compromised.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hairline">
+
+    <section class="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-6">
+      <div>
+        <div class="font-display text-gold text-2xl italic leading-none">03</div>
+        <div class="eyebrow-muted mt-2">The thesis</div>
+      </div>
+      <div class="space-y-4">
+        <label class="block"><span class="eyebrow-muted block mb-2">Walk through your read</span>
+          <textarea rows="4">NQ at NY AM open. Asia low swept overnight, expansion candle on the 5m closed back inside the range — small opposing wick, EQ of prior 15m respected. Took the long with TP1 at the 15m FVG above and TP2 at yesterday's high.</textarea>
+        </label>
+      </div>
+    </section>
+
+    <hr class="hairline">
+
+    <div class="flex items-center gap-4 pt-2">
+      <button type="submit" class="btn-primary">Log the trade</button>
+    </div>
+  </form>
+
+  <!-- Recent trades -->
+  <div class="mb-6">
+    <div class="eyebrow mb-3"><span class="rule-gold mr-3"></span>The record</div>
+    <h2 class="font-display text-2xl">Recent trades.</h2>
+  </div>
+  <div class="space-y-4">
+
+    <!-- Trade 1: WIN -->
+    <article class="card p-6">
+      <header class="flex items-start justify-between gap-6 flex-wrap">
+        <div class="min-w-0">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="font-display text-xl">NQ</span>
+            <span class="text-soft">·</span>
+            <span class="eyebrow-muted">long · 2c</span>
+            <span class="text-soft">·</span>
+            <span class="font-display italic text-bone">Won.</span>
+          </div>
+          <div class="flex items-center gap-2 mt-2 flex-wrap">
+            <span class="text-[11px] tracking-eyebrow uppercase text-gold border border-gold/40 px-2 py-0.5">Expansion</span>
+            <span class="text-[11px] tracking-eyebrow uppercase text-bone-dim border border-soft px-2 py-0.5">NY AM expansion</span>
+            <span class="text-[11px] tracking-eyebrow uppercase text-muted-soft border border-soft px-2 py-0.5">calm</span>
+          </div>
+          <div class="text-xs text-muted-soft mt-3">2026-05-05 · 10:34 AM · 21847.50 → 21893.25</div>
+        </div>
+        <div class="text-right">
+          <div class="font-display italic text-3xl text-bone num leading-none">+$915.00</div>
+          <div class="eyebrow-muted mt-2">1.85R · <span class="text-bone">8/10</span></div>
+        </div>
+      </header>
+
+      <div class="flex gap-1.5 mt-4 flex-wrap">
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-gold/60 text-gold">✓&nbsp;&nbsp;Profile</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-gold/60 text-gold">✓&nbsp;&nbsp;Signature</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-soft text-muted">·&nbsp;&nbsp;Trigger</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-gold/60 text-gold">✓&nbsp;&nbsp;Targets</span>
+      </div>
+
+      <div class="mt-5 pl-4 border-l border-gold/40">
+        <div class="eyebrow-muted mb-2">The thesis</div>
+        <p class="text-[14px] text-bone leading-relaxed font-display">Asia low swept overnight, NY AM expansion candle on the 5m closed back inside the range with a small opposing wick. EQ of the prior 15m respected. TP1 at 15m FVG, TP2 at yesterday's high.</p>
+      </div>
+    </article>
+
+    <!-- Trade 2: LOSS -->
+    <article class="card p-6">
+      <header class="flex items-start justify-between gap-6 flex-wrap">
+        <div class="min-w-0">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="font-display text-xl">ES</span>
+            <span class="text-soft">·</span>
+            <span class="eyebrow-muted">short · 1c</span>
+            <span class="text-soft">·</span>
+            <span class="font-display italic text-bone">Lost.</span>
+          </div>
+          <div class="flex items-center gap-2 mt-2 flex-wrap">
+            <span class="text-[11px] tracking-eyebrow uppercase text-gold border border-gold/40 px-2 py-0.5">Reversal</span>
+            <span class="text-[11px] tracking-eyebrow uppercase text-muted-soft border border-soft px-2 py-0.5">rushed</span>
+          </div>
+          <div class="text-xs text-muted-soft mt-3">2026-05-04 · 02:18 PM · 5891.25 → 5895.50</div>
+        </div>
+        <div class="text-right">
+          <div class="font-display italic text-3xl text-bone num leading-none">−$212.50</div>
+          <div class="eyebrow-muted mt-2">−1.00R · <span class="text-muted-soft">4/10</span></div>
+        </div>
+      </header>
+
+      <div class="flex gap-1.5 mt-4 flex-wrap">
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-soft text-muted">·&nbsp;&nbsp;Profile</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-gold/60 text-gold">✓&nbsp;&nbsp;Signature</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-soft text-muted">·&nbsp;&nbsp;Trigger</span>
+        <span class="text-[11px] tracking-eyebrow uppercase px-2.5 py-1 border border-soft text-muted">·&nbsp;&nbsp;Targets</span>
+      </div>
+
+      <div class="mt-5 pl-4 border-l border-gold/40">
+        <div class="eyebrow-muted mb-2">The thesis</div>
+        <p class="text-[14px] text-bone leading-relaxed font-display">Saw a wick at the 1H high and shorted without waiting for the 5m to confirm. No clear trigger. Targets weren't marked before entry.</p>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-20 border-t border-soft">
+  <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-3">
+    <svg viewBox="0 0 60 100" width="12" height="20" fill="none">
+      <line x1="6" y1="5" x2="54" y2="5" stroke="#C6AB5C" stroke-width="2"/>
+      <line x1="6" y1="95" x2="54" y2="95" stroke="#C6AB5C" stroke-width="2"/>
+      <path d="M10 9 L50 9 L30 50 Z" fill="#F0EDE8"/>
+      <path d="M10 91 L50 91 L30 50 Z" fill="#F0EDE8"/>
+      <circle cx="30" cy="50" r="2" fill="#C6AB5C"/>
+    </svg>
+    <div class="font-display italic text-bone-dim">Wait. Then act.</div>
+    <div class="eyebrow-muted"><span>Kairos</span><span class="mx-2 text-soft">·</span><span>Journal</span></div>
+  </div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- MENTOR VIEW -->
+<!-- ============================================================ -->
+<div class="section-divider">— Mentor cohort view —</div>
+
+<!-- TopBar -->
+<div class="border-b border-soft">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <svg viewBox="0 0 60 100" width="14" height="24" fill="none">
+        <line x1="6" y1="5" x2="54" y2="5" stroke="#C6AB5C" stroke-width="2"/>
+        <line x1="6" y1="95" x2="54" y2="95" stroke="#C6AB5C" stroke-width="2"/>
+        <path d="M10 9 L50 9 L30 50 Z" fill="#F0EDE8"/>
+        <path d="M10 91 L50 91 L30 50 Z" fill="#F0EDE8"/>
+        <circle cx="30" cy="50" r="2" fill="#C6AB5C"/>
+      </svg>
+      <span class="font-display tracking-wordmark uppercase text-[15px]">Kairos</span>
+      <span class="w-px h-4 bg-soft"></span>
+      <span class="eyebrow-muted">Journal</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="eyebrow-muted hidden sm:inline">Mentor</span>
+      <button class="btn-quiet">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<main class="max-w-6xl w-full mx-auto px-6 py-12">
+  <header class="mb-10 pb-8 border-b border-soft">
+    <div class="eyebrow mb-5"><span class="rule-gold mr-3"></span>The cohort</div>
+    <h1 class="font-display text-5xl leading-tight">The room, <em class="text-gold">at a glance.</em></h1>
+    <p class="mt-4 text-bone-dim max-w-2xl">Diagnose first. Prescribe second. Critical flags surface above warnings; warnings above quiet.</p>
+  </header>
+
+  <!-- Cohort numbers -->
+  <section class="grid grid-cols-2 md:grid-cols-4 gap-px bg-soft border border-soft mb-12">
+    <div class="bg-canvas px-5 py-6"><div class="eyebrow-muted">Cohort net</div><div class="mt-2 font-display num text-3xl leading-none text-bone">+$24,318.50</div></div>
+    <div class="bg-canvas px-5 py-6"><div class="eyebrow-muted">Trades logged</div><div class="mt-2 font-display num text-3xl leading-none text-bone">487</div></div>
+    <div class="bg-canvas px-5 py-6"><div class="eyebrow-muted">Cohort win rate</div><div class="mt-2 font-display num text-3xl leading-none text-bone">58.3%</div></div>
+    <div class="bg-canvas px-5 py-6"><div class="eyebrow-muted">Active alerts</div><div class="mt-2 font-display num text-3xl leading-none italic text-gold">4</div></div>
+  </section>
+
+  <!-- Alerts -->
+  <section class="mb-12">
+    <div class="eyebrow mb-3"><span class="rule-gold mr-3"></span>Alerts</div>
+    <h2 class="font-display text-2xl mb-5">Requiring attention.</h2>
+    <div class="space-y-2">
+
+      <a href="#" class="block bg-surface border-l-4 border-gold hover:bg-surface-2 transition-colors px-5 py-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="font-display text-lg text-bone">Marcus Chen</div>
+            <div class="font-display italic text-bone-dim mt-1">Five losses in sequence.</div>
+            <div class="text-sm text-muted-soft mt-1.5 leading-relaxed">The window is closed for today. Run the loss-streak protocol.</div>
+          </div>
+          <span class="eyebrow-muted whitespace-nowrap mt-1">View →</span>
+        </div>
+      </a>
+
+      <a href="#" class="block bg-surface border-l-4 border-gold hover:bg-surface-2 transition-colors px-5 py-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="font-display text-lg text-bone">Sarah Patel</div>
+            <div class="font-display italic text-bone-dim mt-1">Size doubled after a loss.</div>
+            <div class="text-sm text-muted-soft mt-1.5 leading-relaxed">4 contracts against a typical 2. The classic tilt signal.</div>
+          </div>
+          <span class="eyebrow-muted whitespace-nowrap mt-1">View →</span>
+        </div>
+      </a>
+
+      <a href="#" class="block bg-surface border-l-2 border-gold/60 hover:bg-surface-2 transition-colors px-5 py-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="font-display text-lg text-bone">Jordan Lee</div>
+            <div class="font-display italic text-bone-dim mt-1">Forcing trades.</div>
+            <div class="text-sm text-muted-soft mt-1.5 leading-relaxed">Framework score averaging 4.2 of ten. Re-anchor on Profile, Signature, Trigger, Targets.</div>
+          </div>
+          <span class="eyebrow-muted whitespace-nowrap mt-1">View →</span>
+        </div>
+      </a>
+
+      <a href="#" class="block bg-surface border-l-2 border-gold/60 hover:bg-surface-2 transition-colors px-5 py-4">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <div class="font-display text-lg text-bone">Alex Rivera</div>
+            <div class="font-display italic text-bone-dim mt-1">The room is loud.</div>
+            <div class="text-sm text-muted-soft mt-1.5 leading-relaxed">4 of the last 10 trades were tagged revenge, fomo, or rushed.</div>
+          </div>
+          <span class="eyebrow-muted whitespace-nowrap mt-1">View →</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Equity curve preview -->
+  <section class="card p-6 mb-12">
+    <div class="flex items-baseline justify-between mb-5">
+      <div>
+        <div class="eyebrow-muted">Equity curve · Marcus Chen</div>
+        <div class="font-display italic text-3xl text-bone num mt-2">−$1,247.50</div>
+      </div>
+      <div class="text-right text-xs text-muted-soft">
+        <div>38 trades</div>
+        <div class="font-display italic">2026-04-01 → 2026-05-05</div>
+      </div>
+    </div>
+    <svg viewBox="0 0 800 240" class="w-full h-56" preserveAspectRatio="xMidYMid meet">
+      <text x="6" y="24" font-size="10" fill="#6b6b6b" font-family="Inter">+$2,400.00</text>
+      <text x="6" y="220" font-size="10" fill="#6b6b6b" font-family="Inter">−$1,800.00</text>
+      <line x1="60" x2="780" y1="138" y2="138" stroke="#C6AB5C" stroke-opacity="0.3" stroke-dasharray="3 5"/>
+      <text x="6" y="142" font-size="10" fill="#9c854a" font-family="Inter">$0</text>
+      <path d="M 60 160 L 110 130 L 160 145 L 210 100 L 260 80 L 310 105 L 360 70 L 410 90 L 460 60 L 510 95 L 560 130 L 610 150 L 660 175 L 710 165 L 760 185" fill="none" stroke="#C6AB5C" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M 60 160 L 110 130 L 160 145 L 210 100 L 260 80 L 310 105 L 360 70 L 410 90 L 460 60 L 510 95 L 560 130 L 610 150 L 660 175 L 710 165 L 760 185 L 760 138 L 60 138 Z" fill="#C6AB5C" fill-opacity="0.06"/>
+      <circle cx="60" cy="160" r="2" fill="#C6AB5C"/>
+      <circle cx="760" cy="185" r="3" fill="#C6AB5C"/>
+    </svg>
+  </section>
+
+  <!-- Habits -->
+  <section class="mb-12">
+    <div class="eyebrow mb-3"><span class="rule-gold mr-3"></span>The patterns</div>
+    <h2 class="font-display text-2xl mb-5">Recurring habits.</h2>
+    <div class="space-y-2">
+      <div class="bg-surface border-l-4 border-gold px-5 py-4">
+        <div class="font-display text-base text-bone leading-snug">NY AM expansion is not pulling its weight.</div>
+        <div class="text-sm text-bone-dim mt-2 leading-relaxed">8 trades, 25% win rate, net −$480. Drop it from the playbook.</div>
+      </div>
+      <div class="bg-surface border-l-2 border-gold/60 px-5 py-4">
+        <div class="font-display text-base text-bone leading-snug">Targets is the missed pillar.</div>
+        <div class="text-sm text-bone-dim mt-2 leading-relaxed">Skipped on 18 of 38 trades. The framework breaks when one pillar leaves.</div>
+      </div>
+      <div class="bg-surface border-l-2 border-gold/60 px-5 py-4">
+        <div class="font-display text-base text-bone leading-snug">Mondays are not your day.</div>
+        <div class="text-sm text-bone-dim mt-2 leading-relaxed">22% across 9 mondays. Consider sitting them out.</div>
+      </div>
+      <div class="bg-surface border-l border-soft px-5 py-4">
+        <div class="font-display text-base text-bone leading-snug">The framework is paid.</div>
+        <div class="text-sm text-bone-dim mt-2 leading-relaxed">Low-score trades lose 78% of the time. High-score trades, 23%. The data is unambiguous.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Students table -->
+  <section>
+    <div class="eyebrow mb-3"><span class="rule-gold mr-3"></span>Students</div>
+    <h2 class="font-display text-2xl mb-5">All twenty.</h2>
+    <div class="overflow-x-auto card">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-soft">
+            <th class="px-4 py-3 text-left eyebrow-muted">Student</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Trades</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Win rate</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Avg R</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Framework</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Net</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Streak</th>
+            <th class="px-4 py-3 text-left eyebrow-muted">Flags</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-soft hover:bg-surface-2">
+            <td class="px-4 py-4"><a href="#" class="font-display text-bone hover:text-gold">Marcus Chen</a><div class="text-xs text-muted-soft mt-0.5">marcus@example.com</div></td>
+            <td class="px-4 py-4 num font-display text-bone">38</td>
+            <td class="px-4 py-4 num font-display text-bone">31.6%</td>
+            <td class="px-4 py-4 num font-display text-bone">−0.42</td>
+            <td class="px-4 py-4 num font-display text-muted-soft">4.2</td>
+            <td class="px-4 py-4 num font-display text-bone">−$1,247.50</td>
+            <td class="px-4 py-4 num font-display italic text-gold">5</td>
+            <td class="px-4 py-4"><span class="text-[11px] tracking-eyebrow uppercase border border-gold text-gold px-2 py-0.5">3</span></td>
+          </tr>
+          <tr class="border-b border-soft hover:bg-surface-2">
+            <td class="px-4 py-4"><a href="#" class="font-display text-bone hover:text-gold">Sarah Patel</a></td>
+            <td class="px-4 py-4 num font-display text-bone">42</td>
+            <td class="px-4 py-4 num font-display text-bone">52.4%</td>
+            <td class="px-4 py-4 num font-display text-bone">0.91</td>
+            <td class="px-4 py-4 num font-display text-bone-dim">6.1</td>
+            <td class="px-4 py-4 num font-display text-bone">+$847.00</td>
+            <td class="px-4 py-4 num font-display text-bone">2</td>
+            <td class="px-4 py-4"><span class="text-[11px] tracking-eyebrow uppercase border border-gold text-gold px-2 py-0.5">1</span></td>
+          </tr>
+          <tr class="border-b border-soft hover:bg-surface-2">
+            <td class="px-4 py-4"><a href="#" class="font-display text-bone hover:text-gold">Jordan Lee</a></td>
+            <td class="px-4 py-4 num font-display text-bone">29</td>
+            <td class="px-4 py-4 num font-display text-bone">44.8%</td>
+            <td class="px-4 py-4 num font-display text-bone">0.62</td>
+            <td class="px-4 py-4 num font-display text-bone-dim">5.4</td>
+            <td class="px-4 py-4 num font-display text-bone">+$215.00</td>
+            <td class="px-4 py-4 num font-display text-bone">1</td>
+            <td class="px-4 py-4"><span class="text-[11px] tracking-eyebrow uppercase border border-gold/60 text-bone px-2 py-0.5">1</span></td>
+          </tr>
+          <tr class="border-b border-soft hover:bg-surface-2">
+            <td class="px-4 py-4"><a href="#" class="font-display text-bone hover:text-gold">Priya Anand</a></td>
+            <td class="px-4 py-4 num font-display text-bone">51</td>
+            <td class="px-4 py-4 num font-display text-bone">68.6%</td>
+            <td class="px-4 py-4 num font-display text-bone">1.78</td>
+            <td class="px-4 py-4 num font-display italic text-gold">9.1</td>
+            <td class="px-4 py-4 num font-display text-bone">+$5,892.00</td>
+            <td class="px-4 py-4 num font-display text-bone">0</td>
+            <td class="px-4 py-4"><span class="text-muted">—</span></td>
+          </tr>
+          <tr class="border-b border-soft hover:bg-surface-2">
+            <td class="px-4 py-4"><a href="#" class="font-display text-bone hover:text-gold">Alex Rivera</a></td>
+            <td class="px-4 py-4 num font-display text-bone">36</td>
+            <td class="px-4 py-4 num font-display text-bone">47.2%</td>
+            <td class="px-4 py-4 num font-display text-bone">0.78</td>
+            <td class="px-4 py-4 num font-display text-bone-dim">5.9</td>
+            <td class="px-4 py-4 num font-display text-bone">+$402.50</td>
+            <td class="px-4 py-4 num font-display text-bone">0</td>
+            <td class="px-4 py-4"><span class="text-[11px] tracking-eyebrow uppercase border border-gold/60 text-bone px-2 py-0.5">1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-muted-soft mt-3 font-display italic">
+      Click a student. The equity curve, the active flags, and the patterns are all on the next page.
+    </p>
+  </section>
+</main>
+
+<footer class="mt-20 border-t border-soft">
+  <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-3">
+    <svg viewBox="0 0 60 100" width="12" height="20" fill="none">
+      <line x1="6" y1="5" x2="54" y2="5" stroke="#C6AB5C" stroke-width="2"/>
+      <line x1="6" y1="95" x2="54" y2="95" stroke="#C6AB5C" stroke-width="2"/>
+      <path d="M10 9 L50 9 L30 50 Z" fill="#F0EDE8"/>
+      <path d="M10 91 L50 91 L30 50 Z" fill="#F0EDE8"/>
+      <circle cx="30" cy="50" r="2" fill="#C6AB5C"/>
+    </svg>
+    <div class="font-display italic text-bone-dim">Wait. Then act.</div>
+    <div class="eyebrow-muted"><span>Kairos</span><span class="mx-2 text-soft">·</span><span>Journal</span></div>
+  </div>
+</footer>
+
+</body>
+</html>
