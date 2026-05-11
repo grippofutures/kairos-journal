@@ -16,6 +16,41 @@ const TRADE_COLUMNS =
   "id, user_id, traded_at, instrument, direction, contracts, entry_price, exit_price, pnl, r_multiple, setup_tag, outcome, notes, emotion_tag, screenshot_path, thesis, candle_type, framework_score, criteria_profile, criteria_signature, criteria_trigger, criteria_targets, followed_model";
 
 export default async function MentorPage() {
+  try {
+    return await renderMentorPage();
+  } catch (err) {
+    // Surface the actual error to the rendered page so we can debug in prod
+    // (Next.js obfuscates server errors normally — this bypasses that).
+    const e = err as Error;
+    return (
+      <div className="min-h-screen flex items-center justify-center px-6 py-12">
+        <div className="max-w-3xl w-full">
+          <h1 className="font-display text-3xl text-bone mb-6">
+            /mentor failed to render.
+          </h1>
+          <div className="card p-6 space-y-4">
+            <div>
+              <div className="eyebrow-muted mb-2">Error message</div>
+              <pre className="text-sm text-bone whitespace-pre-wrap bg-canvas p-3 border border-soft overflow-auto max-h-60">
+                {e.message || "(no message)"}
+              </pre>
+            </div>
+            {e.stack && (
+              <div>
+                <div className="eyebrow-muted mb-2">Stack</div>
+                <pre className="text-[11px] text-bone-dim whitespace-pre-wrap bg-canvas p-3 border border-soft overflow-auto max-h-96">
+                  {e.stack}
+                </pre>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+async function renderMentorPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -28,22 +63,25 @@ export default async function MentorPage() {
 
   if (profile?.role !== "mentor") redirect("/dashboard");
 
-  const { data: students = [] } = await supabase
+  const { data: students = [], error: studentsErr } = await supabase
     .from("profiles")
     .select("id, email, display_name")
     .eq("role", "student")
     .order("email");
+  if (studentsErr) throw new Error(`students query: ${studentsErr.message}`);
 
-  const { data: allTrades = [] } = await supabase
+  const { data: allTrades = [], error: tradesErr } = await supabase
     .from("trades")
     .select(TRADE_COLUMNS)
     .order("traded_at", { ascending: false });
+  if (tradesErr) throw new Error(`trades query: ${tradesErr.message}`);
 
   // Count of unreviewed trades for the review-queue badge
-  const { count: unreviewedCount } = await supabase
+  const { count: unreviewedCount, error: unreviewedErr } = await supabase
     .from("trades")
     .select("id", { count: "exact", head: true })
     .is("reviewed_at", null);
+  if (unreviewedErr) throw new Error(`unreviewedCount query: ${unreviewedErr.message}`);
 
   const tradesByUser = new Map<string, typeof allTrades>();
   for (const t of allTrades ?? []) {
