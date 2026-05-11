@@ -56,7 +56,7 @@ export async function GET(request: Request) {
   if (!appRole) {
     await supabase.auth.signOut();
     return failTo(
-      "Your Discord account has no mentorship role. Contact Garrett to be added.",
+      "Your Discord account has no mentorship role. Contact Grippo to be added.",
     );
   }
 

@@ -46,7 +46,7 @@ Use a Discord account that's not in your server (a personal alt, a friend's, etc
 
 - [ ] Find or create a Discord account that's in your server but has *none* of the four approved roles
 - [ ] Sign in with that account
-- [ ] You land on `/login` with: **"Your Discord account has no mentorship role. Contact Garrett to be added."**
+- [ ] You land on `/login` with: **"Your Discord account has no mentorship role. Contact Grippo to be added."**
 
 ### 5. Magic link is gone
 
